@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\Api\carritoController;
 use App\Http\Controllers\Api\categoriaController;
 use App\Http\Controllers\Api\subcategoriaController;
@@ -13,6 +14,16 @@ use App\Http\Controllers\Api\registroController;
 use App\Http\Controllers\Api\ventaController;
 use App\Http\Controllers\Api\usuarioController;
 use App\Http\Controllers\Api\stockController;
+
+
+Route::post('/auth/register', [AuthController::class, 'register']);
+Route::post('/auth/login', [AuthController::class, 'login'])->name('login');
+
+Route::middleware('auth:api')->group(function () {
+    Route::post('/auth/profile', [AuthController::class, 'profile']);
+    Route::post('/auth/logout', [AuthController::class, 'logout']);
+    Route::post('/auth/refresh', [AuthController::class, 'refresh']);
+});
 
 Route::get('/carrito', [carritoController::class, 'index']);
 Route::get('/carrito/{id}', [carritoController::class, 'show']);
